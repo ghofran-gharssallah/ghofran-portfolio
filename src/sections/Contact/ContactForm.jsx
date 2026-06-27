@@ -25,16 +25,16 @@ const ContactForm = () => {
     setLoading(true);
 
     try {
-      await emailjs.send(
-        "service_odqq9p9",
-        "template_ok84sfq",
-        {
-          from_name: form.name,
-          from_email: form.email,
-          message: form.message,
-        },
-        "D5l-PNYzsbFNTBIH9"
-      );
+      emailjs.send(
+  import.meta.env.VITE_EMAILJS_SERVICE_ID,
+  import.meta.env.VITE_EMAILJS_TEMPLATE_ID,
+  {
+    from_name: form.name,
+    from_email: form.email,
+    message: form.message,
+  },
+  import.meta.env.VITE_EMAILJS_PUBLIC_KEY
+);
 
       toast.success("Message sent successfully!");
 
