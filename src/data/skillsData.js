@@ -12,6 +12,9 @@ import {
   SiPython,
   SiJavascript,
   SiMysql,
+  SiExpress,
+  SiMongodb,
+  SiJsonwebtokens,
 } from "react-icons/si";
 
 import { BsCpu } from "react-icons/bs";
@@ -50,6 +53,14 @@ export const skills = [
   },
 
   {
+    title: "Express.js",
+    icon: SiExpress,
+    color: "text-zinc-300",
+    description: "Fast and minimal Node.js web framework.",
+    category: "Backend",
+  },
+
+  {
     title: "Symfony",
     icon: SiSymfony,
     color: "text-white",
@@ -70,6 +81,22 @@ export const skills = [
     icon: SiMysql,
     color: "text-blue-400",
     description: "Relational database management.",
+    category: "Backend",
+  },
+
+  {
+    title: "MongoDB",
+    icon: SiMongodb,
+    color: "text-green-400",
+    description: "NoSQL database with Mongoose modeling.",
+    category: "Backend",
+  },
+
+  {
+    title: "JWT",
+    icon: SiJsonwebtokens,
+    color: "text-pink-500",
+    description: "Secure authentication and role-based access.",
     category: "Backend",
   },
 

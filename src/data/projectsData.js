@@ -71,4 +71,33 @@ export const projects = [
       "/projects/deepface/1.png",
     ],
   },
+
+  {
+    id: 4,
+    title: "Inventory Management System",
+
+    description:
+      "Full-stack inventory platform for managing products and users with JWT authentication and role-based access.",
+
+    technologies: [
+      "MongoDB",
+      "Express.js",
+      "React",
+      "Node.js",
+    ],
+
+    github:
+      "https://github.com/ghofran-gharssallah/inventory-management-system",
+
+    demo: "",
+
+    images: [
+      "/projects/inventory-management-system/3.png",
+      "/projects/inventory-management-system/6.png",
+      "/projects/inventory-management-system/4.png",
+      "/projects/inventory-management-system/5.png",
+      "/projects/inventory-management-system/2.png",
+      "/projects/inventory-management-system/1.png",
+    ],
+  },
 ];
