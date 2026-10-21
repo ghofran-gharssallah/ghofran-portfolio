@@ -1,46 +1,48 @@
 import { motion } from "framer-motion";
+import { ease } from "../../components/ui/motionPresets";
 
 const JourneyCard = ({ item, index }) => {
   return (
     <motion.div
-      initial={{ opacity: 0, x: index % 2 === 0 ? -80 : 80 }}
+      initial={{ opacity: 0, x: index % 2 === 0 ? -40 : 40 }}
       whileInView={{ opacity: 1, x: 0 }}
-      viewport={{ once: true }}
+      viewport={{ once: true, amount: 0.4 }}
       transition={{
-        duration: 0.8,
-        delay: index * 0.15,
+        duration: 0.7,
+        ease,
       }}
       className="
       relative
-      rounded-3xl
+      rounded-2xl
       border
-      border-white/10
-      bg-white/5
+      border-line
+      bg-surface
       p-6
-      backdrop-blur-xl
-      transition-all
-      duration-300
-      hover:-translate-y-3
-      hover:scale-[1.02]
-      hover:border-indigo-500/40
-      hover:shadow-[0_0_45px_rgba(99,102,241,.35)]
+      shadow-soft
+      transition-[translate,box-shadow,border-color]
+      duration-500
+      ease-out
+      hover:-translate-y-1.5
+      hover:border-accent
+      hover:shadow-warm
+      md:p-8
       "
     >
       {/* Year */}
 
-      <span className="text-sm font-semibold text-indigo-400">
+      <span className="inline-block rounded-full bg-butter-tint px-3 py-1 text-sm font-semibold text-ink">
         {item.year}
       </span>
 
       {/* Title */}
 
-      <h3 className="mt-2 text-2xl font-bold">
+      <h3 className="mt-4 text-2xl font-medium">
         {item.title}
       </h3>
 
       {/* Description */}
 
-      <p className="mt-4 leading-7 text-zinc-400">
+      <p className="mt-3 leading-7 text-muted">
         {item.description}
       </p>
     </motion.div>

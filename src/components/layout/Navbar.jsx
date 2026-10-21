@@ -1,6 +1,12 @@
-import { useState } from "react";
-import { AnimatePresence, motion } from "framer-motion";
+import { useEffect, useState } from "react";
+import {
+  AnimatePresence,
+  motion,
+  useMotionValueEvent,
+  useScroll,
+} from "framer-motion";
 import { HiOutlineMenuAlt3, HiX } from "react-icons/hi";
+import { ease } from "../ui/motionPresets";
 
 const links = [
   {
@@ -27,17 +33,51 @@ const links = [
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  const [active, setActive] = useState("#hero");
+
+  const { scrollY } = useScroll();
+
+  useMotionValueEvent(scrollY, "change", (y) => {
+    setScrolled(y > 20);
+  });
+
+  // Highlight the section crossing the middle of the viewport
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) setActive(`#${entry.target.id}`);
+        });
+      },
+      { rootMargin: "-45% 0px -50% 0px" }
+    );
+
+    links.forEach((link) => {
+      const section = document.querySelector(link.href);
+      if (section) observer.observe(section);
+    });
+
+    return () => observer.disconnect();
+  }, []);
 
   return (
-    <header className="fixed top-0 left-0 z-50 w-full border-b border-white/10 bg-[#050816]/70 backdrop-blur-xl shadow-[0_10px_30px_rgba(0,0,0,.25)]">
+    <motion.header
+      initial={{ y: -20, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      transition={{ duration: 0.6, ease }}
+      className={`fixed top-0 left-0 z-50 w-full border-b bg-paper transition-shadow duration-500 ${
+        scrolled ? "border-line shadow-soft" : "border-transparent"
+      }`}
+    >
       <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-6">
         {/* Logo */}
 
         <a
           href="#hero"
-          className="text-2xl font-bold tracking-wide"
+          className="font-serif text-2xl font-semibold tracking-tight text-ink"
         >
-          GG<span className="text-indigo-500">.</span>
+          GG
         </a>
 
         {/* Desktop Navigation */}
@@ -48,9 +88,33 @@ const Navbar = () => {
               <li key={link.name}>
                 <a
                   href={link.href}
-                  className="text-sm text-zinc-300 transition duration-300 hover:text-white"
+                  className={`
+                    group
+                    relative
+                    py-2
+                    text-sm
+                    font-medium
+                    transition-colors
+                    duration-300
+                    hover:text-ink
+                    ${active === link.href ? "text-ink" : "text-muted"}
+                  `}
                 >
                   {link.name}
+
+                  <span
+                    aria-hidden="true"
+                    className="absolute -bottom-0.5 left-0 h-0.5 w-full origin-left scale-x-0 rounded-full bg-accent/50 transition-transform duration-300 ease-out group-hover:scale-x-100"
+                  />
+
+                  {active === link.href && (
+                    <motion.span
+                      layoutId="nav-underline"
+                      aria-hidden="true"
+                      transition={{ duration: 0.5, ease }}
+                      className="absolute -bottom-0.5 left-0 h-0.5 w-full rounded-full bg-accent"
+                    />
+                  )}
                 </a>
               </li>
             ))}
@@ -67,18 +131,18 @@ const Navbar = () => {
             hidden
             md:flex
             items-center
-            rounded-xl
-            border
-            border-indigo-500/20
-            bg-indigo-600
+            rounded-full
+            bg-accent
             px-5
-            py-3
+            py-2.5
             text-sm
             font-semibold
+            text-ink
             transition-all
             duration-300
-            hover:scale-105
-            hover:bg-indigo-500
+            hover:-translate-y-0.5
+            hover:bg-accent-hover
+            hover:shadow-warm
           "
         >
           Download CV
@@ -88,7 +152,7 @@ const Navbar = () => {
 
         <button
           onClick={() => setIsOpen(!isOpen)}
-          className="text-3xl text-white md:hidden"
+          className="text-3xl text-ink md:hidden"
         >
           {isOpen ? <HiX /> : <HiOutlineMenuAlt3 />}
         </button>
@@ -99,16 +163,15 @@ const Navbar = () => {
       <AnimatePresence>
         {isOpen && (
           <motion.div
-            initial={{ opacity: 0, y: -25 }}
+            initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -25 }}
-            transition={{ duration: 0.25 }}
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.3, ease }}
             className="
               md:hidden
               border-t
-              border-white/10
-              bg-[#050816]/95
-              backdrop-blur-xl
+              border-line
+              bg-paper
             "
           >
             <nav className="px-6 py-6">
@@ -118,16 +181,25 @@ const Navbar = () => {
                     <a
                       href={link.href}
                       onClick={() => setIsOpen(false)}
-                      className="
-                        block
+                      className={`
+                        flex
+                        items-center
+                        gap-3
                         text-lg
                         font-medium
-                        text-zinc-300
-                        transition
+                        transition-colors
                         duration-300
-                        hover:text-white
-                      "
+                        hover:text-ink
+                        ${active === link.href ? "text-ink" : "text-muted"}
+                      `}
                     >
+                      <span
+                        aria-hidden="true"
+                        className={`h-0.5 rounded-full bg-accent transition-all duration-300 ${
+                          active === link.href ? "w-5" : "w-0"
+                        }`}
+                      />
+
                       {link.name}
                     </a>
                   </li>
@@ -145,14 +217,15 @@ const Navbar = () => {
                   w-full
                   items-center
                   justify-center
-                  rounded-xl
-                  bg-indigo-600
+                  rounded-full
+                  bg-accent
                   px-5
                   py-3
                   font-semibold
-                  transition-all
+                  text-ink
+                  transition-colors
                   duration-300
-                  hover:bg-indigo-500
+                  hover:bg-accent-hover
                 "
               >
                 Download CV
@@ -161,7 +234,7 @@ const Navbar = () => {
           </motion.div>
         )}
       </AnimatePresence>
-    </header>
+    </motion.header>
   );
 };
 

@@ -1,77 +1,71 @@
 import { motion } from "framer-motion";
+import { ease } from "../../components/ui/motionPresets";
+import { iconColor } from "./iconColors";
 
-const SkillCard = ({ skill, index }) => {
+const pop = {
+  hidden: { opacity: 0, y: 24, scale: 0.94 },
+  show: {
+    opacity: 1,
+    y: 0,
+    scale: 1,
+    transition: { duration: 0.6, ease },
+  },
+};
+
+const SkillCard = ({ skill }) => {
   const Icon = skill.icon;
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 40 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{
-        duration: 0.5,
-        delay: index * 0.08,
-      }}
+      variants={pop}
       whileHover={{
-        y: -8,
-        scale: 1.03,
+        y: -6,
+        transition: { duration: 0.3, ease },
       }}
       className="
         group
         relative
         overflow-hidden
-        rounded-3xl
+        rounded-2xl
         border
-        border-white/10
-        bg-white/5
+        border-line
+        bg-surface
         p-6
-        backdrop-blur-xl
-        transition-all
-        duration-300
-        hover:border-indigo-500/40
-        hover:shadow-[0_0_40px_rgba(99,102,241,.25)]
+        shadow-soft
+        transition-[box-shadow,border-color]
+        duration-500
+        hover:border-accent
+        hover:shadow-warm
       "
     >
-      {/* Glow */}
-
-      <div
-        className="
-          absolute
-          inset-0
-          opacity-0
-          transition-opacity
-          duration-500
-          group-hover:opacity-100
-          bg-gradient-to-br
-          from-indigo-500/10
-          via-transparent
-          to-cyan-500/10
-        "
-      />
-
       <div className="relative z-10">
 
         <div
           className="
             flex
-            h-16
-            w-16
+            h-14
+            w-14
             items-center
             justify-center
-            rounded-2xl
-            bg-white/5
+            rounded-xl
+            bg-paper
             border
-            border-white/10
+            border-line
+            transition-transform
+            duration-500
+            ease-out
+            group-hover:-rotate-6
+            group-hover:scale-110
           "
         >
-          <Icon className={`text-4xl ${skill.color}`} />
+          <Icon className={`text-3xl ${iconColor(skill.color)}`} />
         </div>
 
-        <h3 className="mt-6 text-xl font-bold">
+        <h3 className="mt-6 text-xl font-medium">
           {skill.title}
         </h3>
 
-        <p className="mt-3 text-sm leading-6 text-zinc-400">
+        <p className="mt-3 text-sm leading-6 text-muted">
           {skill.description}
         </p>
 
@@ -80,13 +74,12 @@ const SkillCard = ({ skill, index }) => {
             mt-6
             inline-block
             rounded-full
-            border
-            border-indigo-500/20
-            bg-indigo-500/10
+            bg-accent-tint
             px-3
             py-1
             text-xs
-            text-indigo-300
+            font-medium
+            text-ink
           "
         >
           {skill.category}

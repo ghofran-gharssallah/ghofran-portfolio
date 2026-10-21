@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 
-import BackgroundGlow from "../../components/hero/BackgroundGlow";
+import FloatingShapes from "../../components/hero/FloatingShapes";
 import GridOverlay from "../../components/hero/GridOverlay";
 
 const HeroVisual = () => {
@@ -8,7 +8,7 @@ const HeroVisual = () => {
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      transition={{ duration: 1 }}
+      transition={{ duration: 1.2 }}
       className="
         absolute
         inset-0
@@ -16,9 +16,9 @@ const HeroVisual = () => {
         pointer-events-none
       "
     >
-      <BackgroundGlow />
-
       <GridOverlay />
+
+      <FloatingShapes />
       <div
 className="
 absolute
@@ -29,7 +29,7 @@ w-[1600px]
 -translate-x-1/2
 rounded-[100%]
 border
-border-indigo-500/10
+border-line
 "
 />
 
@@ -43,7 +43,7 @@ w-[1800px]
 -translate-x-1/2
 rounded-[100%]
 border
-border-cyan-500/10
+border-accent/20
 "
 />
     </motion.div>

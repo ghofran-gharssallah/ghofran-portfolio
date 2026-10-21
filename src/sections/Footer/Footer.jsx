@@ -13,7 +13,7 @@ const Footer = () => {
   };
 
   return (
-    <footer className="relative border-t border-white/10 bg-[#050816]">
+    <footer className="relative border-t border-line bg-surface">
 
       <div className="mx-auto max-w-7xl px-6 py-14">
 
@@ -23,11 +23,11 @@ const Footer = () => {
 
           <div>
 
-            <h2 className="text-2xl font-bold">
+            <h2 className="font-serif text-2xl font-medium">
               Ghofran Gharssallah
             </h2>
 
-            <p className="mt-3 max-w-md text-zinc-400">
+            <p className="mt-3 max-w-md leading-7 text-muted">
               Full Stack Developer passionate about building
               modern web applications and AI-powered solutions.
             </p>
@@ -50,11 +50,14 @@ const Footer = () => {
               justify-center
               rounded-full
               border
-              border-white/10
-              bg-white/5
-              transition
-              hover:border-indigo-500
-              hover:bg-indigo-500/20
+              border-line
+              bg-surface
+              text-ink
+              transition-all
+              duration-300
+              hover:-translate-y-1
+              hover:border-accent
+              hover:bg-accent-tint
               "
             >
               <FaGithub />
@@ -72,11 +75,14 @@ const Footer = () => {
               justify-center
               rounded-full
               border
-              border-white/10
-              bg-white/5
-              transition
-              hover:border-cyan-500
-              hover:bg-cyan-500/20
+              border-line
+              bg-surface
+              text-ink
+              transition-all
+              duration-300
+              hover:-translate-y-1
+              hover:border-accent
+              hover:bg-accent-tint
               "
             >
               <FaLinkedin />
@@ -91,9 +97,13 @@ const Footer = () => {
               items-center
               justify-center
               rounded-full
-              bg-indigo-600
-              transition
-              hover:bg-indigo-500
+              bg-accent
+              text-ink
+              transition-all
+              duration-300
+              hover:-translate-y-1
+              hover:bg-accent-hover
+              hover:shadow-warm
               "
             >
               <FaArrowUp />
@@ -105,14 +115,14 @@ const Footer = () => {
 
         {/* Bottom */}
 
-        <div className="mt-12 border-t border-white/10 pt-8 text-center">
+        <div className="mt-12 border-t border-line pt-8 text-center">
 
-          <p className="text-zinc-500">
+          <p className="text-muted">
             © {new Date().getFullYear()} Ghofran Gharssallah.
             All Rights Reserved.
           </p>
 
-          <p className="mt-2 text-sm text-zinc-600">
+          <p className="mt-2 text-sm text-muted">
            Crafted with React, Tailwind CSS and Framer Motion.
           </p>
 

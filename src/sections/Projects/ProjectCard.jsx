@@ -1,8 +1,10 @@
 import { useState, useEffect } from "react";
 import { AnimatePresence, motion } from "framer-motion";
+import { ease } from "../../components/ui/motionPresets";
 
 import {
   FaGithub,
+  FaArrowRight,
   FaChevronLeft,
   FaChevronRight,
 } from "react-icons/fa";
@@ -30,28 +32,40 @@ const ProjectCard = ({ project, index }) => {
     );
   };
 
+  const fromLeft = index % 2 === 0;
+
   return (
     <motion.div
-      initial={{ opacity: 0, y: 60 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
+      initial={{ opacity: 0, x: fromLeft ? -60 : 60 }}
+      whileInView={{ opacity: 1, x: 0 }}
+      viewport={{ once: true, amount: 0.25 }}
       transition={{
-        duration: 0.7,
-        delay: index * 0.15,
+        duration: 0.8,
+        ease,
       }}
       className="
+      group
       overflow-hidden
-      rounded-[30px]
+      rounded-3xl
       border
-      border-white/10
-      bg-white/5
-      backdrop-blur-xl
-      shadow-[0_0_40px_rgba(99,102,241,.15)]
+      border-line
+      bg-surface
+      shadow-soft
+      transition-[translate,box-shadow,border-color]
+      duration-500
+      ease-out
+      hover:-translate-y-1.5
+      hover:border-accent
+      hover:shadow-warm
       "
     >
       {/* Image */}
 
-      <div className="relative h-[300px] overflow-hidden bg-[#0b1020]">
+      <div className={`relative h-[300px] overflow-hidden border-b border-line ${
+        fromLeft ? "bg-accent-tint" : "bg-butter-tint"
+      }`}>
+
+        <div className="h-full w-full transition-transform duration-700 ease-out group-hover:scale-[1.04]">
 
         <AnimatePresence mode="wait">
 
@@ -59,10 +73,10 @@ const ProjectCard = ({ project, index }) => {
             key={current}
             src={project.images[current]}
             alt={project.title}
-            initial={{ opacity: 0, x: 40 }}
+            initial={{ opacity: 0, x: 12 }}
             animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: -40 }}
-            transition={{ duration: .35 }}
+            exit={{ opacity: 0, x: -12 }}
+            transition={{ duration: .4, ease }}
             className="
             h-full
             w-full
@@ -72,6 +86,8 @@ const ProjectCard = ({ project, index }) => {
           />
 
         </AnimatePresence>
+
+        </div>
 
         {project.images.length > 1 && (
           <>
@@ -83,12 +99,13 @@ const ProjectCard = ({ project, index }) => {
               top-1/2
               -translate-y-1/2
               rounded-full
-              bg-indigo-600
+              bg-surface
               p-3
-              text-white
-              shadow-lg
-              transition
-              hover:bg-indigo-500
+              text-ink
+              shadow-soft
+              transition-colors
+              duration-300
+              hover:bg-accent
               "
             >
               <FaChevronLeft />
@@ -102,12 +119,13 @@ const ProjectCard = ({ project, index }) => {
               top-1/2
               -translate-y-1/2
               rounded-full
-              bg-indigo-600
+              bg-surface
               p-3
-              text-white
-              shadow-lg
-              transition
-              hover:bg-indigo-500
+              text-ink
+              shadow-soft
+              transition-colors
+              duration-300
+              hover:bg-accent
               "
             >
               <FaChevronRight />
@@ -130,8 +148,8 @@ const ProjectCard = ({ project, index }) => {
               onClick={() => setCurrent(i)}
               className={`transition-all ${
                 current === i
-                  ? "h-2.5 w-8 rounded-full bg-indigo-500"
-                  : "h-2.5 w-2.5 rounded-full bg-white/30"
+                  ? "h-2 w-6 rounded-full bg-accent"
+                  : "h-2 w-2 rounded-full bg-line hover:bg-accent/50"
               }`}
             />
 
@@ -143,30 +161,31 @@ const ProjectCard = ({ project, index }) => {
 
       {/* Content */}
 
-      <div className="p-7">
+      <div className="p-6 md:p-8">
 
-        <h3 className="text-3xl font-bold">
+        <h3 className="text-2xl font-medium tracking-tight transition-colors duration-300 md:text-3xl">
           {project.title}
         </h3>
 
-        <p className="mt-4 leading-7 text-zinc-400">
+        <p className="mt-4 leading-7 text-muted">
           {project.description}
         </p>
 
         <div className="mt-6 flex flex-wrap gap-3">
 
-          {project.technologies.map((tech) => (
+          {project.technologies.map((tech, i) => (
 
             <span
               key={tech}
-              className="
+              className={`
+              ${i % 2 === 0 ? "bg-accent-tint" : "bg-butter-tint"}
               rounded-full
-              bg-indigo-500/10
               px-4
-              py-2
+              py-1.5
               text-sm
-              text-indigo-300
-              "
+              font-medium
+              text-ink
+              `}
             >
               {tech}
             </span>
@@ -185,17 +204,26 @@ const ProjectCard = ({ project, index }) => {
             flex
             items-center
             gap-2
-            rounded-xl
-            bg-indigo-600
+            group/btn
+            rounded-full
+            border-2
+            border-ink
             px-5
-            py-3
-            transition
-            hover:bg-indigo-500
+            py-2.5
+            text-sm
+            font-semibold
+            text-ink
+            transition-colors
+            duration-300
+            hover:bg-ink
+            hover:text-surface
             "
           >
             <FaGithub />
 
             GitHub
+
+            <FaArrowRight className="text-xs transition-transform duration-300 group-hover/btn:translate-x-1" />
           </a>
 
           {project.demo && (
@@ -205,15 +233,25 @@ const ProjectCard = ({ project, index }) => {
               target="_blank"
               rel="noreferrer"
               className="
-              rounded-xl
-              border
-              border-white/10
+              group/btn
+              flex
+              items-center
+              gap-2
+              rounded-full
+              bg-accent
               px-5
               py-3
-              hover:bg-white/5
+              text-sm
+              font-semibold
+              text-ink
+              transition-colors
+              duration-300
+              hover:bg-accent-hover
               "
             >
               Live Demo
+
+              <FaArrowRight className="text-xs transition-transform duration-300 group-hover/btn:translate-x-1" />
             </a>
 
           )}

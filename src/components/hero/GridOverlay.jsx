@@ -1,5 +1,3 @@
-import { motion } from "framer-motion";
-
 const GridOverlay = () => {
   return (
     <>
@@ -7,8 +5,8 @@ const GridOverlay = () => {
         className="
         absolute
         inset-0
-        opacity-[0.05]
-        bg-[linear-gradient(rgba(255,255,255,.08)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,.08)_1px,transparent_1px)]
+        opacity-40
+        bg-[linear-gradient(var(--color-line)_1px,transparent_1px),linear-gradient(90deg,var(--color-line)_1px,transparent_1px)]
         bg-[size:80px_80px]
         "
       />
@@ -17,7 +15,7 @@ const GridOverlay = () => {
         className="
         absolute
         inset-0
-        bg-[radial-gradient(circle_at_center,transparent_20%,#050816_100%)]
+        bg-[radial-gradient(circle_at_center,transparent_10%,var(--color-paper)_75%)]
         "
       />
     </>
@@ -25,4 +23,3 @@ const GridOverlay = () => {
 };
 
 export default GridOverlay;
-

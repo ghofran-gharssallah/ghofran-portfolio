@@ -1,42 +1,53 @@
+import { useRef } from "react";
+import { motion, useScroll, useSpring } from "framer-motion";
 import JourneyCard from "./JourneyCard";
+import SectionHeading from "../../components/ui/SectionHeading";
 import { journey } from "../../data/journeyData";
 
 const Journey = () => {
+  const timelineRef = useRef(null);
+
+  // Line grows from the first to the last item as they cross the viewport
+  const { scrollYProgress } = useScroll({
+    target: timelineRef,
+    offset: ["start 70%", "end 55%"],
+  });
+
+  const lineScale = useSpring(scrollYProgress, {
+    stiffness: 120,
+    damping: 30,
+    restDelta: 0.001,
+  });
+
   return (
     <section
       id="journey"
-      className="relative py-32"
+      className="relative overflow-x-clip py-32"
     >
-        <div className="absolute left-0 top-20 h-80 w-80 rounded-full bg-indigo-600/10 blur-[160px]" />
-
-<div className="absolute right-0 bottom-20 h-80 w-80 rounded-full bg-cyan-500/10 blur-[160px]" />
       <div className="mx-auto max-w-7xl px-6">
 
-        <div className="mb-20 text-center">
+        <SectionHeading
+          number="01"
+          label="MY JOURNEY"
+          title="From Curiosity to Professional Development"
+        >
+          My path in software development, from learning the
+          fundamentals to building modern web applications
+          and exploring Artificial Intelligence.
+        </SectionHeading>
 
-          <span className="text-indigo-400 font-semibold">
-            MY JOURNEY
-          </span>
-
-          <h2 className="mt-4 text-5xl font-black">
-            From Curiosity to Professional Development
-          </h2>
-
-          <p className="mx-auto mt-6 max-w-2xl text-zinc-400">
-            My path in software development, from learning the
-            fundamentals to building modern web applications
-            and exploring Artificial Intelligence.
-          </p>
-
-        </div>
-
-        <div className="relative mx-auto max-w-5xl">
+        <div ref={timelineRef} className="relative mx-auto max-w-5xl">
 
   {/* Vertical Line */}
 
-  <div className="absolute left-1/2 top-0 hidden h-full w-[2px] -translate-x-1/2 bg-gradient-to-b from-indigo-500 via-cyan-500 to-transparent md:block" />
+  <div className="absolute left-2 top-0 h-full w-px -translate-x-1/2 bg-line md:left-1/2" />
 
-  <div className="space-y-16">
+  <motion.div
+    style={{ scaleY: lineScale }}
+    className="absolute left-2 top-0 h-full w-0.5 origin-top -translate-x-1/2 rounded-full bg-accent md:left-1/2"
+  />
+
+  <div className="space-y-12 md:space-y-16">
 
          {journey.map((item, index) => (
   <div
@@ -47,24 +58,29 @@ const Journey = () => {
   >
     {/* Circle */}
 
-    <div
+    <motion.div
+      initial={{ scale: 0 }}
+      whileInView={{ scale: 1 }}
+      viewport={{ once: true, margin: "0px 0px -45% 0px" }}
+      transition={{ type: "spring", stiffness: 400, damping: 18 }}
       className="
       absolute
-      left-1/2
-      hidden
-      h-5
-      w-5
-      -translate-x-1/2
+      left-2
+      z-10
+      -ml-2
+      h-4
+      w-4
       rounded-full
-      border-4
-      border-[#050816]
-      bg-indigo-500
-      shadow-[0_0_20px_rgba(99,102,241,.7)]
-      md:block
+      border-[3px]
+      border-accent
+      bg-surface
+      ring-4
+      ring-paper
+      md:left-1/2
       "
     />
 
-    <div className="w-full md:w-[45%]">
+    <div className="w-full pl-10 md:w-[45%] md:pl-0">
       <JourneyCard
         item={item}
         index={index}
@@ -74,7 +90,7 @@ const Journey = () => {
 ))}
 
         </div>
-   </div> 
+   </div>
       </div>
     </section>
   );

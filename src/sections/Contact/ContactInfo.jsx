@@ -1,3 +1,5 @@
+import { motion } from "framer-motion";
+import { fadeUp, stagger } from "../../components/ui/motionPresets";
 import {
   FaGithub,
   FaLinkedin,
@@ -34,7 +36,13 @@ const infos = [
 
 const ContactInfo = () => {
   return (
-    <div className="space-y-6">
+    <motion.div
+      variants={stagger(0.1)}
+      initial="hidden"
+      whileInView="show"
+      viewport={{ once: true, amount: 0.3 }}
+      className="space-y-6"
+    >
 
       {infos.map((info) => {
 
@@ -42,52 +50,57 @@ const ContactInfo = () => {
 
         return (
 
-          <a
+          <motion.a
+            variants={fadeUp}
             key={info.title}
             href={info.href}
             target="_blank"
             rel="noreferrer"
             className="
+            group
             flex
             items-center
             gap-5
-            rounded-3xl
+            rounded-2xl
             border
-            border-white/10
-            bg-white/5
+            border-line
+            bg-surface
             p-6
-            backdrop-blur-xl
-            transition
-            hover:border-indigo-500
+            shadow-soft
+            transition-[translate,box-shadow,border-color]
+            duration-500
+            ease-out
             hover:-translate-y-1
+            hover:border-accent
+            hover:shadow-warm
             "
           >
 
-            <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-indigo-500/10">
+            <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-xl bg-accent-tint transition-colors duration-300 group-hover:bg-accent">
 
-              <Icon className="text-xl text-indigo-400"/>
+              <Icon className="text-xl text-ink"/>
 
             </div>
 
-            <div>
+            <div className="min-w-0">
 
               <h3 className="font-semibold">
                 {info.title}
               </h3>
 
-              <p className="text-sm text-zinc-400">
+              <p className="break-words text-sm text-muted">
                 {info.value}
               </p>
 
             </div>
 
-          </a>
+          </motion.a>
 
         );
 
       })}
 
-    </div>
+    </motion.div>
   );
 };
 
